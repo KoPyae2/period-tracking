@@ -2,13 +2,14 @@
 
 import { ProfileForm } from "@/components/profile-form"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-
+import { SiteHeader } from "@/components/site-header"
 export default function ProfilePage() {
   return (
-    <div className="container max-w-3xl mx-auto py-10">
-      <h1 className="text-3xl font-bold mb-6">Account Settings</h1>
+    <div className=" mx-auto ">
+      <SiteHeader />
+      <h1 className="text-3xl font-bold m-6">Account Settings</h1>
 
-      <Card>
+      <Card className="m-6">
         <CardHeader>
           <CardTitle>Profile Settings</CardTitle>
           <CardDescription>

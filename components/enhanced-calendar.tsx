@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { format, addDays, subDays, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isSameDay, parseISO, differenceInDays } from "date-fns"
-import { ChevronLeft, ChevronRight, Info, Calendar as CalendarIcon, Droplets, Moon } from "lucide-react"
+import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Droplets, Moon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { Period } from "@/lib/supabase"
@@ -22,7 +22,6 @@ interface EnhancedCalendarProps {
 
 export function EnhancedCalendar({ periods, averageCycleLength }: EnhancedCalendarProps) {
   const [currentDate, setCurrentDate] = useState(new Date())
-  const [selectedDate, setSelectedDate] = useState(new Date())
   const [cycleData, setCycleData] = useState<{
     periodDays: Date[]
     fertileDays: Date[]
@@ -212,6 +211,40 @@ export function EnhancedCalendar({ periods, averageCycleLength }: EnhancedCalend
     return ""
   }
 
+  // Get background color class based on phase
+  const getPhaseColorClasses = () => {
+    switch (cycleData.phaseColor) {
+      case 'rose': return {
+        bg: 'bg-rose-50',
+        border: 'border-rose-200',
+        icon: 'bg-rose-100 text-rose-600'
+      }
+      case 'teal': return {
+        bg: 'bg-teal-50',
+        border: 'border-teal-200',
+        icon: 'bg-teal-100 text-teal-600'
+      }
+      case 'amber': return {
+        bg: 'bg-amber-50',
+        border: 'border-amber-200',
+        icon: 'bg-amber-100 text-amber-600'
+      }
+      case 'indigo': return {
+        bg: 'bg-indigo-50',
+        border: 'border-indigo-200',
+        icon: 'bg-indigo-100 text-indigo-600'
+      }
+      default: return {
+        bg: 'bg-yellow-50',
+        border: 'border-yellow-200',
+        icon: 'bg-yellow-100 text-yellow-600'
+      }
+    }
+  }
+
+  // Get color classes
+  const colorClasses = getPhaseColorClasses()
+
   // Get tooltip text for day
   const getDayTooltip = (day: Date) => {
     if (hasPeriod(day)) return "Period day"
@@ -224,11 +257,11 @@ export function EnhancedCalendar({ periods, averageCycleLength }: EnhancedCalend
   return (
     <div className="w-full space-y-6">
       {/* Enhanced Phase Information */}
-      <div className={`bg-${cycleData.phaseColor}-50 p-6 rounded-lg border border-${cycleData.phaseColor}-200 shadow-sm`}>
+      <div className={cn("p-6 rounded-lg border shadow-sm", colorClasses.bg, colorClasses.border)}>
         <div className="md:flex items-start justify-between">
           {/* Phase details */}
           <div className="flex items-start mb-4 md:mb-0">
-            <div className={`rounded-full bg-${cycleData.phaseColor}-100 p-3 mr-4 text-${cycleData.phaseColor}-600`}>
+            <div className={cn("rounded-full p-3 mr-4", colorClasses.icon)}>
               {cycleData.phaseIcon}
             </div>
             <div>
@@ -335,7 +368,7 @@ export function EnhancedCalendar({ periods, averageCycleLength }: EnhancedCalend
                               isNextPeriodStart(day) && "bg-transparent"
                             )}
                           >
-                            {isOvulation(day) && <span className="text-[10px] uppercase font-bold">Ovulation</span>}
+                            {isOvulation(day) && <span className="text-[10px] uppercase font-bold">Ov</span>}
                           </div>
                         )}
                       </div>

@@ -1,5 +1,6 @@
 import { auth } from "@/auth"; // Import the new `auth()` function from next-auth 15 beta
 import { DashboardNav } from "@/components/dashboard-nav";
+import { SiteHeader } from "@/components/site-header";
 import { redirect } from "next/navigation";
 import { ReactNode } from "react";
 
@@ -12,8 +13,11 @@ export default async function AuthLayout({ children }: { children: ReactNode }) 
   }
   return (
       <div className="container mx-auto">
-        <DashboardNav />
-        {children}
+        <SiteHeader />
+        <div className="mx-auto px-4 md:px-0">
+          <DashboardNav />
+          {children}
+        </div>
       </div>
   );
 }
